@@ -10,4 +10,10 @@
 *UnitTests
 
 ```
+###Packages
+```
+/ApplicationCore
+install-package Ardalis.Specification
+```
+
 ## RESOURCES
