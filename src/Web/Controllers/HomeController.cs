@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,15 +14,17 @@ namespace Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRepository<Product> _productRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IRepository<Product> productRepository)
         {
             _logger = logger;
+            _productRepository = productRepository;
         }
 
-        public IActionResult Index()
+        public async Task< IActionResult> Index()
         {
-            return View();
+            return  View(await _productRepository.ListAllAsync());
         }
 
         public IActionResult Privacy()
