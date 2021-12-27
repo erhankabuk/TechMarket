@@ -85,5 +85,12 @@ body {
     -webkit-box-orient:vertical;
 }
 
+.nav-basket-items-counts {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    border-radius: 50%;
+}
+
 
 

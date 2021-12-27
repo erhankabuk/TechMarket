@@ -8,7 +8,7 @@
 <div class="card">
     <form id="frmFilters" class="card-body form-inline p-2 bg-light">
         <label>Category</label>
-        <select  class="form-control ml-sm-2" asp-items="Model.Categories" asp-for="CategoryId">
+        <select class="form-control ml-sm-2" asp-items="Model.Categories" asp-for="CategoryId">
             <option value="">All</option>
         </select>
         <label class="ml-sm-3">Brand</label>
@@ -17,10 +17,6 @@
         </select>
     </form>
 </div>
-
-
-
-
 
 <div class="row">
     @foreach (var item in Model.Products)
@@ -34,7 +30,7 @@
                     <div class="product-title" title="@item.Name">@item.Name</div>
                     <div class="d-flex justify-content-between align-items-baseline ">
                         <span>@item.PriceText</span>
-                        <a href="#" class="btn btn-success">
+                        <a href="#" class="btn btn-success" data-add-to-basket="@item.Id">
                             <i class="fas fa-cart-plus"></i>
                         </a>
                     </div>
@@ -43,17 +39,66 @@
         </div>
     }
 </div>
-<h3>Pagination Info</h3>
 
-TotalItems : @Model.PaginationInfo.TotalItems
+<nav class="mt-2">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(!Model.PaginationInfo.HasPrevious ? "invisible" : "")">
+            @{ await PageLink(Model.PaginationInfo.CurrentPage - 1, "&laquo;"); }
+        </li>
 
+        @foreach (int i in Model.PaginationInfo.PageNumbers)
+        {
+            if (i == -1)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">&hellip;</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item @(i == Model.PaginationInfo.CurrentPage ? "active" : "")">
+                    @{ await PageLink(i, i.ToString()); }
+                </li>
+            }
+        }
+        <li class="page-item @(!Model.PaginationInfo.HasNext ? "invisible" : "")">
+            @{ await PageLink(Model.PaginationInfo.CurrentPage + 1, "&raquo;"); }
+        </li>
+    </ul>
+</nav>
 
 
 @section Scripts{
     <script>
-        $("#frmFilters").change(function(){
+        $("[data-add-to-basket]").click(function (event) {
+            event.preventDefault();
+            var productId = $(this).data("add-to-basket");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("AddItem","Basket")",
+                data: { productId: productId },
+                success: function (data) {
+                    $(".nav-basket-items-counts").text(data);
+                    toastr.success("Added to cart.");
+                }
+            })
+        })
+     
+        $("#frmFilters").change(function () {
             this.submit();
         })
     </script>
 
 }
+@{
+    async Task PageLink(int pageNo, string text)
+    {
+        <a class="page-link" asp-route-page="@pageNo" asp-route-CategoryId="@Model.CategoryId" asp-route-BrandId="@Model.BrandId">@Html.Raw(text)</a>
+    }
+}
+
+
+
+
+
+
