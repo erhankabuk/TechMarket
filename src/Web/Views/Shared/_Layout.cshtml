@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,14 +34,7 @@
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav">
-                        <li class="nav-item" >
-                            <a asp-controller="Basket" asp-action="Index" class="nav-link position-relative">
-                                <i class="fas fa-shopping-cart text-dark fa-lg " ></i>
-                                <span class="badge badge-success nav-basket-items-counts">@Web.Controllers.BasketController.amount</span>
-                            </a>
-                        </li>
-                    </ul>
+                   <partial name="_NavBasketPartial"/>
                 </div>
             </div>
         </nav>

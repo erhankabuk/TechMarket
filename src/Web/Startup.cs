@@ -37,7 +37,8 @@ namespace Web
 
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IHomeViewModelService, HomeViewModelService>();
+            services.AddScoped<IHomeViewModelService, HomeViewModelService>(); 
+            services.AddScoped<IBasketViewModelService, BasketViewModelService>();
             services.AddControllersWithViews();
         }
 

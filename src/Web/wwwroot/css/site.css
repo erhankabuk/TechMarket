@@ -92,5 +92,10 @@ body {
     border-radius: 50%;
 }
 
+.toast-top-right{
+    top: 66px;
+    right:12px;
+}
+
 
 

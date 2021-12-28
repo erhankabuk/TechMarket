@@ -1,0 +1,7 @@
+﻿@model Basket
+
+@foreach (BasketItem item in Model.Items)
+            {
+                <p>@item.Product.Name x @item.Quantity</p>
+            }           
+<p>Total Price: @Model.Items.Sum(x=>x.Quantity * x.Product.Price)</p>
