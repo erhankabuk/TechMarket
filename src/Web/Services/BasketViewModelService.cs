@@ -122,5 +122,12 @@ namespace Web.Services
             await _basketService.EmptyBasketAsync(buyerId);
 
         }
+
+        public async Task RemoveBasketItemAsync(int basketItemId)
+        {
+            var buyerId = UserId ?? AnonymousId;
+            if (buyerId == null) return;
+            await _basketService.RemoveBasketItemAsync(buyerId, basketItemId);
+        }
     }
 }

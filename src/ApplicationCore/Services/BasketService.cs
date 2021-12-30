@@ -26,5 +26,16 @@ namespace ApplicationCore.Services
             await _basketRepository.UpdateAsync(basket);
 
         }
+
+        public async Task RemoveBasketItemAsync(string buyerId, int basketItemId)
+        {
+            var spec = new BasketWithItemsSpecification(buyerId);
+            var basket = await _basketRepository.FirstOrDefaultAsync(spec);
+            if (basket == null || basket.Items.Count == 0) return;
+            var basketItem = basket.Items.FirstOrDefault(x=>x.Id == basketItemId);
+            if (basketItem == null) return;
+            basket.Items.Remove(basketItem);
+            await _basketRepository.UpdateAsync(basket);
+        }
     }
 }

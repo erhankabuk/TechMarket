@@ -14,14 +14,20 @@
                 <div class="pt-4 wish-list">
 
                     <div class="d-flex justify-content-between align-items-baseline">
-                        <h5 class="mb-4">Cart (<span>@Model.Items.Count</span> items)</h5>
+                        <h5 class="mb-4">Cart (<span>@Model.Items.Count</span> item@(Model.Items.Count == 1 ? "":"s"))</h5>
 
                         <div>
                             <button type="button" class="btn btn-sm btn-danger" onclick="emptyCart()">Empty Cart</button>
                             <button class="btn btn-sm btn-success ml-2">Update Cart</button>
                         </div>
                     </div>
-
+                    @if (Model.Items.Count==0) { 
+                    <div class="card">
+                        <div class="card-body p-5 text-center">
+                            <i class="fas fa-shopping-basket"></i> Cart is empty.
+                        </div>
+                    </div>
+                    }
                     @foreach (var item in Model.Items)
                     {
                         <div class="row mb-4">
@@ -45,7 +51,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3" onclick="removeItem(3)">
+                                            <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3" onclick="removeItem(@item.Id)">
                                                 <i class="fas fa-trash-alt mr-1"></i> Remove item
                                             </a>
                                             <a href="#!" type="button" class="card-link-secondary small text-uppercase">
@@ -110,6 +116,9 @@
 </section>
 
 <form id="frmEmptyBasket" asp-controller="Basket" asp-action="EmptyBasket" method="post"></form>
+<form id="frmRemoveBasket" asp-controller="Basket" asp-action="RemoveItem" method="post">
+    <input id="hdnBasketItemId" type="hidden" name="basketItemId" value="" />
+</form>
 @section Scripts{ 
 <script>
     function emptyCart() {
@@ -120,6 +129,14 @@
     var message = "@TempData["Message"]";
     if (message) {
         toastr.success(message);
+    }
+
+    function removeItem(basketItemId) {
+        window.event.preventDefault();
+        document.getElementById("hdnBasketItemId").value = basketItemId;
+        document.getElementById("frmRemoveBasket").submit();
+
+
     }
 </script>
 

@@ -34,5 +34,12 @@ namespace Web.Controllers
             TempData["Message"] = "Your basket is empty.";
             return RedirectToAction("Index", "Basket");
         }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveItem(int basketItemId)
+        {
+            await _basketViewModelService.RemoveBasketItemAsync(basketItemId);
+            TempData["Message"] = "Item has been removed from basket.";
+            return RedirectToAction("Index", "Basket");
+        }
     }
 }
