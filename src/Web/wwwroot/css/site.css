@@ -107,3 +107,9 @@ body {
 .empty-basket-icon {
     font-size: 48px;
 }
+
+/*BasketViewComponent*/
+.lh-condensed{
+    line-height:1.25;
+}
+
