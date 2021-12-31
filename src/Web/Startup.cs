@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Web.Interfaces;
+using Web.Middlewares;
 using Web.Services;
 
 namespace Web
@@ -62,10 +63,12 @@ namespace Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // app.UseMiddleware<BasketTransfer>();
+            app.UseBasketTransfer();
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

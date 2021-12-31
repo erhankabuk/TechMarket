@@ -1,150 +1,151 @@
 ﻿@model BasketViewModel
-@{ViewData["Title"] = "Basket"; }
-<!--Section: Block Content-->
-<section>
+@{
+    ViewData["Title"] = "Basket";
+}
 
-    <!--Grid row-->
-    <div class="row">
+<form asp-controller="Basket" asp-action="UpdateItems" method="post">
+    <!--Section: Block Content-->
+    <section>
 
-        <!--Grid column-->
-        <div class="col-lg-8">
+        <!--Grid row-->
+        <div class="row">
 
-            <!-- Card -->
-            <div class="mb-3">
-                <div class="pt-4 wish-list">
+            <!--Grid column-->
+            <div class="col-lg-8">
 
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h5 class="mb-4">Cart (<span>@Model.Items.Count</span> item@(Model.Items.Count == 1 ? "":"s"))</h5>
+                <!-- Card -->
+                <div class="mb-3">
+                    <div class="pt-4 wish-list">
 
-                        <div>
-                            <button type="button" class="btn btn-sm btn-danger" onclick="emptyCart()">Empty Cart</button>
-                            <button class="btn btn-sm btn-success ml-2">Update Cart</button>
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h5 class="mb-4">Cart (<span>@Model.Items.Count</span> item@(Model.Items.Count == 1 ? "" : "s"))</h5>
+
+                            <div>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="emptyCart()">Empty Cart</button>
+                                <button class="btn btn-sm btn-success ml-2">Update Cart</button>
+                            </div>
                         </div>
-                    </div>
-                    @if (Model.Items.Count==0) { 
-                    <div class="card">
-                        <div class="card-body p-5 text-center">
-                            <i class="fas fa-shopping-basket"></i> Cart is empty.
-                        </div>
-                    </div>
-                    }
-                    @foreach (var item in Model.Items)
-                    {
-                        <div class="row mb-4">
-                            <div class="col-md-3 col-lg-2 col-xl-2">
-                                <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-                                    <img class="img-fluid w-100" src="~/uploads/products/@item.PictureUri" alt="Sample">
+
+                        @if (Model.Items.Count == 0)
+                        {
+                            <div class="card">
+                                <div class="card-body p-5 text-center">
+                                    <i class="fas fa-shopping-basket"></i> Your basket is empty.
                                 </div>
                             </div>
-                            <div class="col-md-9 col-lg-10 col-xl-10">
-                                <div>
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h5>@item.ProductName</h5>
-                                            <p class="mb-3 text-muted text-uppercase small">Unit Price: @item.PriceUsd</p>
-                                        </div>
-                                        <div>
-                                            <div class="def-number-input number-input safari_only mb-0">
-                                                <input class="quantity" min="1" name="quantities[3]" value="@item.Quantity" type="number">
+                        }
+
+                        @foreach (var item in Model.Items)
+                        {
+                            <input type="hidden" name="basketItemIds" value="@item.Id" />
+                            <div class="row mb-4">
+                                <div class="col-md-3 col-lg-2 col-xl-2">
+                                    <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                                        <img class="img-fluid w-100" src="~/uploads/products/@item.PictureUri" alt="Sample">
+                                    </div>
+                                </div>
+                                <div class="col-md-9 col-lg-10 col-xl-10">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h5>@item.ProductName</h5>
+                                                <p class="mb-3 text-muted text-uppercase small">Unit Price: @item.PriceUsd</p>
+                                            </div>
+                                            <div>
+                                                <div class="def-number-input number-input safari_only mb-0">
+                                                    <input class="quantity" min="1" name="quantities" value="@item.Quantity" type="number">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3" onclick="removeItem(@item.Id)">
-                                                <i class="fas fa-trash-alt mr-1"></i> Remove item
-                                            </a>
-                                            <a href="#!" type="button" class="card-link-secondary small text-uppercase">
-                                                <i class="fas fa-heart mr-1"></i> Move to wish list
-                                            </a>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3" onclick="removeItem(@item.Id)">
+                                                    <i class="fas fa-trash-alt mr-1"></i> Remove item
+                                                </a>
+                                                <a href="#!" type="button" class="card-link-secondary small text-uppercase">
+                                                    <i class="fas fa-heart mr-1"></i> Move to wish list
+                                                </a>
+                                            </div>
+                                            <p class="mb-0"><span><strong id="summary">@item.TotalPriceUsd</strong></span></p>
                                         </div>
-                                        <p class="mb-0"><span><strong id="summary">@item.PriceUsd</strong></span></p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr class="mb-4">
-                    }
+                            <hr class="mb-4">
+                        }
 
 
+                    </div>
                 </div>
+                <!-- Card -->
             </div>
-            <!-- Card -->
-        </div>
-        <!--Grid column-->
-        <!--Grid column-->
-        <div class="col-lg-4 pl-lg-5">
+            <!--Grid column-->
+            <!--Grid column-->
+            <div class="col-lg-4 pl-lg-5">
 
-            <!-- Card -->
-            <div class="mb-3">
-                <div class="pt-4">
+                <!-- Card -->
+                <div class="mb-3">
+                    <div class="pt-4">
 
-                    <h5 class="mb-3">Total Price</h5>
+                        <h5 class="mb-3">Total Price</h5>
 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                            Subtotal
-                            <span>@Model.TotalPriceUsd</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            Shipping
-                            <span>Free</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                            <div>
-                                <strong>The total amount of</strong>
-                                <strong>
-                                    <p class="mb-0">(including KDV)</p>
-                                </strong>
-                            </div>
-                            <span><strong>@Model.TotalPriceUsd</strong></span>
-                        </li>
-                    </ul>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                Subtotal
+                                <span>@Model.TotalPriceUsd</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Shipping
+                                <span>Free</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                <div>
+                                    <strong>The total amount of</strong>
+                                    <strong>
+                                        <p class="mb-0">(including KDV)</p>
+                                    </strong>
+                                </div>
+                                <span><strong>@Model.TotalPriceUsd</strong></span>
+                            </li>
+                        </ul>
 
-                    <a class="btn btn-primary btn-block" href="/Basket/Checkout">Go To Checkout</a>
+                        <a class="btn btn-primary btn-block" href="/Basket/Checkout">Go To Checkout</a>
 
+                    </div>
                 </div>
+                <!-- Card -->
+
             </div>
-            <!-- Card -->
+            <!--Grid column-->
 
         </div>
-        <!--Grid column-->
+        <!-- Grid row -->
 
-    </div>
-    <!-- Grid row -->
-
-</section>
+    </section>
+</form>
 
 <form id="frmEmptyBasket" asp-controller="Basket" asp-action="EmptyBasket" method="post"></form>
-<form id="frmRemoveBasket" asp-controller="Basket" asp-action="RemoveItem" method="post">
+
+<form id="frmRemoveBasketItem" asp-controller="Basket" asp-action="RemoveItem" method="post">
     <input id="hdnBasketItemId" type="hidden" name="basketItemId" value="" />
 </form>
-@section Scripts{ 
-<script>
-    function emptyCart() {
-        document.getElementById("frmEmptyBasket").submit();
 
-    }
-
-    var message = "@TempData["Message"]";
-    if (message) {
-        toastr.success(message);
-    }
-
+@section Scripts {
+    <script>
     function removeItem(basketItemId) {
         window.event.preventDefault();
         document.getElementById("hdnBasketItemId").value = basketItemId;
-        document.getElementById("frmRemoveBasket").submit();
-
-
+        document.getElementById("frmRemoveBasketItem").submit();
     }
-</script>
 
+    function emptyCart() {
+        document.getElementById("frmEmptyBasket").submit();
+    }
+
+    var message = "@TempData["Message"]";
+
+    if (message) {
+        toastr.success(message);
+    }
+    </script>
 }
-
-
-
-
-
-
-

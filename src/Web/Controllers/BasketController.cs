@@ -41,5 +41,14 @@ namespace Web.Controllers
             TempData["Message"] = "Item has been removed from basket.";
             return RedirectToAction("Index", "Basket");
         }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateItems(int[] basketItemIds, int[] quantities)
+        {
+            await _basketViewModelService.UpdateBasketItemsAsync(basketItemIds,quantities);
+            TempData["Message"] = "Items have been updated.";
+            
+
+            return RedirectToAction("Index", "Basket");
+        }
     }
 }

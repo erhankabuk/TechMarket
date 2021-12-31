@@ -129,5 +129,15 @@ namespace Web.Services
             if (buyerId == null) return;
             await _basketService.RemoveBasketItemAsync(buyerId, basketItemId);
         }
+
+        public async Task UpdateBasketItemsAsync(int[] basketItemIds, int[] quantities)
+        {
+            string buyerId = UserId ?? AnonymousId;
+            if (buyerId == null || basketItemIds.Length == 0) return;
+            if (basketItemIds.Length != quantities.Length)
+                throw new ArgumentException("The basket item ids and quantities don't match.");
+
+            await _basketService.SetQuantitiesAsync(buyerId, basketItemIds, quantities);
+        }
     }
 }
