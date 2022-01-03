@@ -41,6 +41,7 @@ namespace Web
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IHomeViewModelService, HomeViewModelService>(); 
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
             services.AddScoped<ValidateBasketAttribute>();

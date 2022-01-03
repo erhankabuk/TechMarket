@@ -8,7 +8,8 @@ namespace ApplicationCore.Interfaces
 {
     public interface IBasketService
     {
-        Task EmptyBasketAsync(string buyerId);
+        Task EmptyBasketAsync(string buyerId); 
+        Task DeleteBasketAsync(string buyerId);
         Task RemoveBasketItemAsync(string buyerId, int basketItemId);
 
         Task SetQuantitiesAsync(string  buyerId, int[] basketItemIds, int[] quantities);

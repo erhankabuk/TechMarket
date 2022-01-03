@@ -18,7 +18,7 @@ namespace Infrastructure.Data
         {
             _db = db;
         }
-        public async Task<T> AddAsyc(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             _db.Add(entity);
             await _db.SaveChangesAsync();

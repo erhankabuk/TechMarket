@@ -17,6 +17,15 @@ namespace ApplicationCore.Services
         {
             _basketRepository = basketRepository;
         }
+
+        public async Task DeleteBasketAsync(string buyerId)
+        {
+            var specBasket = new BasketSpecification(buyerId);
+            var basket = await _basketRepository.FirstOrDefaultAsync(specBasket);
+            await _basketRepository.DeleteAsync(basket);
+
+        }
+
         public async Task EmptyBasketAsync(string buyerId)
         {
             var spec = new BasketWithItemsSpecification(buyerId);
@@ -64,7 +73,7 @@ namespace ApplicationCore.Services
             if (basketUser == null)
             {
                 basketUser = new Basket() { BuyerId = userId };
-                await _basketRepository.AddAsyc(basketUser);
+                await _basketRepository.AddAsync(basketUser);
             }
 
             foreach (var item in basketAnonymous.Items)

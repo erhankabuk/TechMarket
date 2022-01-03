@@ -19,17 +19,19 @@ namespace Web.Services
         private readonly IRepository<Basket> _basketRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IBasketService _basketService;
+        private readonly IOrderService _orderService;
 
         private string UserId => _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         private string AnonymousId => _httpContextAccessor.HttpContext.Request.Cookies[Constants.BASKET_COOKIENAME];
 
 
-        public BasketViewModelService(IHttpContextAccessor httpContextAccessor, IRepository<Basket> basketRepository, IRepository<Product> productRepository, IBasketService basketService)
+        public BasketViewModelService(IHttpContextAccessor httpContextAccessor, IRepository<Basket> basketRepository, IRepository<Product> productRepository, IBasketService basketService, IOrderService orderService)
         {
             _httpContextAccessor = httpContextAccessor;
             _basketRepository = basketRepository;
             _productRepository = productRepository;
             _basketService = basketService;
+            _orderService = orderService;
         }
 
         public async Task<BasketViewModel> AddItemToBasketAsync(int productId, int quantity = 1)
@@ -78,7 +80,7 @@ namespace Web.Services
             if (basket == null)
             {
                 basket = new Basket() { BuyerId = buyerId };
-                await _basketRepository.AddAsyc(basket);
+                await _basketRepository.AddAsync(basket);
             }
             return basket;
         }
@@ -139,5 +141,29 @@ namespace Web.Services
 
             await _basketService.SetQuantitiesAsync(buyerId, basketItemIds, quantities);
         }
+
+        public async Task<Order> CreateOrderAsync(Address address)
+        {
+           Order order= await _orderService.CreateOrderAsync(UserId, address);
+            await _basketService.DeleteBasketAsync(UserId);
+            return order;
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
