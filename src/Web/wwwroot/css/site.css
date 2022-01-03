@@ -113,3 +113,18 @@ body {
     line-height:1.25;
 }
 
+.field-validation-error{
+    color: var(--danger);
+}
+
+.validation-summary-errors>ul{
+    margin-bottom: 0;
+    
+  
+}
+
+
+
+
+
+
