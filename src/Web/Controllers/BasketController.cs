@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Web.Filters;
 using Web.Interfaces;
 using Web.Models;
 
@@ -26,11 +27,9 @@ namespace Web.Controllers
         {
             return View();
         }
-        [Authorize,HttpPost,ValidateAntiForgeryToken]
+        [Authorize,HttpPost,ValidateAntiForgeryToken,ValidateBasket]
         public async Task<IActionResult> Checkout(CheckoutViewModel vm, string basketJson)
         {
-            if (basketJson != JsonSerializer.Serialize(await _basketViewModelService.GetBasketAsync()))
-                ModelState.AddModelError("", "Your basket has been changed recently. Please review your basket before further process");
             
 
             

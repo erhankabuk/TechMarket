@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Web.Filters;
 using Web.Interfaces;
 using Web.Middlewares;
 using Web.Services;
@@ -42,6 +43,7 @@ namespace Web
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IHomeViewModelService, HomeViewModelService>(); 
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
+            services.AddScoped<ValidateBasketAttribute>();
             services.AddControllersWithViews();
         }
 
